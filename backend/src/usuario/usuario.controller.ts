@@ -25,4 +25,11 @@ export class UsuarioController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     return await this.service.delete(id);
   }
+
+ 
+  @Post('login')
+  async login(@Body() body: any) {
+    // Recibe { email, password } desde el frontend
+    return await this.service.login(body.email, body.password);
+  }
 }

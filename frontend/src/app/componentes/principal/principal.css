@@ -1,0 +1,9 @@
+.content-area {
+  background-color: #202124; /* Color oscuro oficial de Keep */
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.d-flex {
+  height: calc(100vh - 64px);
+}

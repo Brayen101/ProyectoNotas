@@ -1,0 +1,30 @@
+.sidebar {
+  width: 280px;
+  background-color: #202124;
+  padding-top: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: #e8eaed;
+  border-radius: 0 25px 25px 0; /* Bordes redondeados derecha */
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 4px;
+}
+
+.nav-item:hover {
+  background-color: #2d2e30;
+}
+
+.nav-item.active {
+  background-color: #41331c; /* Fondo naranja oscuro */
+  color: #feefc3; /* Texto amarillo claro */
+}
+
+.nav-item i {
+  font-size: 1.2rem;
+  width: 30px;
+}

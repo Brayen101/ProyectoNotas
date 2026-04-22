@@ -1,0 +1,24 @@
+.login-wrapper {
+  min-height: 100vh;
+  background-color: #0d0d0d;
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  border: 1px solid #333;
+}
+.logo-container {
+  font-size: 3rem;
+  color: #ffc107;
+}
+.dark-input-group {
+  background-color: #262626;
+  border: 1px solid #333;
+  border-radius: 10px;
+}
+.form-control:focus {
+  box-shadow: none;
+  color: white;
+}

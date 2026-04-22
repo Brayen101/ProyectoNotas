@@ -1,0 +1,40 @@
+<div class="login-wrapper d-flex align-items-center justify-content-center">
+  <div class="login-card p-4 shadow-lg">
+    <div class="text-center mb-4">
+      <div class="logo-container mb-2">
+        <i class="bi bi-lightbulb-fill"></i>
+      </div>
+      <h2 class="text-white m-0">Keep</h2>
+      <p class="text-secondary small">Inicia sesión en tu cuenta</p>
+    </div>
+
+    <form (ngSubmit)="iniciarSesion()">
+      <div class="mb-3">
+        <label class="form-label text-secondary small">Correo electrónico</label>
+        <div class="input-group dark-input-group">
+          <span class="input-group-text bg-transparent border-0"><i class="bi bi-envelope text-secondary"></i></span>
+          <input type="email" class="form-control bg-transparent text-white border-0" [(ngModel)]="email" name="email" placeholder="tu@email.com" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-secondary small">Contraseña</label>
+        <div class="input-group dark-input-group">
+          <span class="input-group-text bg-transparent border-0"><i class="bi bi-lock text-secondary"></i></span>
+          <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control bg-transparent text-white border-0" [(ngModel)]="password" name="password" placeholder="********" required>
+          <button type="button" class="btn bg-transparent border-0" (click)="mostrarPassword = !mostrarPassword">
+            <i class="bi" [ngClass]="mostrarPassword ? 'bi-eye-slash' : 'bi-eye-fill'" style="color: #666;"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100 fw-bold mt-3 py-2 rounded-pill">
+        Iniciar sesión <i class="bi bi-arrow-right ms-2"></i>
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <p class="text-secondary small">¿No tienes una cuenta? <a routerLink="/registro" class="text-warning text-decoration-none fw-bold">Crear una cuenta</a></p>
+    </div>
+  </div>
+</div>

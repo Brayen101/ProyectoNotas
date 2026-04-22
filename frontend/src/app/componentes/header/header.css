@@ -1,0 +1,5 @@
+.header { height: 64px; background-color: #202124; border-bottom: 1px solid #5f6368; }
+.search-box { background-color: #525355; border-radius: 8px; max-width: 720px; }
+.btn-dark-icon { color: #9aa0a6; transition: 0.2s; }
+.btn-dark-icon:hover { background-color: rgba(255,255,255,0.1); color: white; }
+.avatar { width: 32px; height: 32px; background-color: #e67c73; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; cursor: pointer; }

@@ -16,4 +16,8 @@ export class UsuarioService {
   getAll() {
     return this.http.get(this.URL);
   }
+
+  login(email: string, password: string) {
+  return this.http.post(`${this.URL}/login`, { email, password });
+}
 }

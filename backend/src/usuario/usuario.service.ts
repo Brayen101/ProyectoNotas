@@ -33,17 +33,30 @@ export class UsuarioService {
         return await this.repository.find();
     }
 
-    // ESTO CORRIGE EL ERROR DE 'getById'
+
     async getById(id: number) {
         const user = await this.repository.findOneBy({ id });
         if (!user) throw new NotFoundException('Usuario no encontrado');
         return user;
     }
 
-    // ESTO CORRIGE EL ERROR DE 'delete'
+
     async delete(id: number) {
         const res = await this.repository.delete(id);
         if (res.affected === 0) throw new NotFoundException('No se pudo eliminar');
         return { message: 'Eliminado correctamente', status: 200 };
     }
+    async login(email: string, pass: string) {
+ 
+  const user = await this.repository.findOneBy({ email });
+  if (!user) throw new NotFoundException('El correo no existe');
+
+ 
+  const isMatch = await bcrypt.compare(pass, user.password);
+  if (!isMatch) throw new Error('Contraseña incorrecta');
+
+  
+  const { password, ...result } = user;
+  return result;
+}
 }
