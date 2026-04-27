@@ -1,8 +1,7 @@
 .nota-creador {
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  max-width: 600px;
+  align-self: flex-start;
+  margin-left: 115px;
   background-color: #202124;
   border: 1px solid #5f6368;
   border-radius: 8px;
@@ -14,7 +13,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 34px;
   cursor: text;
 }
 
@@ -25,7 +23,7 @@
 .iconos-cerrado {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 14px;
   font-size: 22px;
 }
 
@@ -34,15 +32,6 @@
   padding: 6px;
   border-radius: 50%;
   transition: 0.2s;
-}
-
-.icono-cerrado-btn {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .iconos-cerrado i:hover {

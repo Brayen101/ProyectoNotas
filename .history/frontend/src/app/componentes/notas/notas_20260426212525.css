@@ -1,6 +1,7 @@
 .nota-creador {
   max-width: 700px;
-  margin: 0 auto;
+  align-self: flex-start;
+  margin-left: 115px;
   padding-top: 0.5rem !important;
   padding-bottom: 0.5rem !important;
   background-color: #202124;
@@ -25,7 +26,7 @@
 .iconos-cerrado {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 14px;
   font-size: 22px;
 }
 
@@ -34,15 +35,6 @@
   padding: 6px;
   border-radius: 50%;
   transition: 0.2s;
-}
-
-.icono-cerrado-btn {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .iconos-cerrado i:hover {

@@ -1,0 +1,37 @@
+<div class="notas-container">
+  <div class="nota-creador shadow-sm p-3 mb-5" [class.expandido]="estaEditando">
+    <div *ngIf="!estaEditando" class="nota-cerrada" (click)="expandir()">
+      <input
+        type="text"
+        placeholder="Crear una nota..."
+        class="form-control bg-transparent border-0 text-white shadow-none nota-cerrada-input"
+        readonly
+      >
+      <div class="nota-cerrada-iconos">
+        <i class="bi bi-check2-square"></i>
+        <i class="bi bi-brush"></i>
+        <i class="bi bi-image"></i>
+      </div>
+    </div>
+
+    <div *ngIf="estaEditando">
+      <input type="text" placeholder="Título" class="form-control bg-transparent border-0 text-white fw-bold mb-2 shadow-none">
+      <textarea placeholder="Crear nota" class="form-control bg-transparent border-0 text-white shadow-none" rows="3"></textarea>
+      
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="iconos-nota text-secondary">
+          <i class="bi bi-bell me-3"></i>
+          <i class="bi bi-person-plus me-3"></i>
+          <i class="bi bi-palette me-3"></i>
+          <i class="bi bi-image me-3"></i>
+          <i class="bi bi-archive me-3"></i>
+        </div>
+        <button class="btn btn-link text-white text-decoration-none fw-bold" (click)="estaEditando = false">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notas-vacias">
+    <p class="text-secondary text-center">Tus notas aparecerán aquí...</p>
+  </div>
+</div>

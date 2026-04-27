@@ -1,0 +1,73 @@
+<div class="notas-container d-flex flex-column align-items-center mt-4">
+  <div class="nota-creador shadow-sm p-3 w-100 mb-5" [class.expandido]="estaEditando">
+    <div *ngIf="!estaEditando" class="nota-cerrada" (click)="expandir('nota')">
+      <input
+        type="text"
+        placeholder="Crear una nota..."
+        class="form-control bg-transparent border-0 text-white fw-bold nota-cerrada-input"
+        readonly
+      >
+      <div class="iconos-cerrado text-secondary">
+        <button type="button" class="icono-btn" (click)="expandir('checklist'); $event.stopPropagation()">
+          <i class="bi bi-check2-square"></i>
+        </button>
+        <button type="button" class="icono-btn" (click)="expandir('dibujo'); $event.stopPropagation()">
+          <i class="bi bi-brush"></i>
+        </button>
+        <button type="button" class="icono-btn" (click)="openImagePicker($event, imageInput)">
+          <i class="bi bi-image"></i>
+        </button>
+      </div>
+    </div>
+    <input #imageInput type="file" accept="image/*" hidden (change)="onImageSelected($event)">
+
+    <div *ngIf="estaEditando" class="editor-abierto">
+      <div class="editor-header">
+        <input
+          [(ngModel)]="notaFormulario.titulo"
+          (ngModelChange)="actualizarHoraEdicion()"
+          type="text"
+          placeholder="Título"
+          class="form-control bg-transparent border-0 text-white fw-bold shadow-none editor-titulo"
+        >
+        <button type="button" class="icono-btn icono-pin" title="Fijar nota">
+          <i class="bi bi-pin-angle"></i>
+        </button>
+      </div>
+
+      <textarea
+        [(ngModel)]="notaFormulario.contenido"
+        (ngModelChange)="actualizarHoraEdicion()"
+        placeholder="Crear una nota..."
+        class="form-control bg-transparent border-0 text-white shadow-none editor-contenido"
+        rows="5"
+      ></textarea>
+
+      <div class="editor-meta" *ngIf="horaEditado">Editado: {{ horaEditado }}</div>
+
+      <div class="editor-footer d-flex justify-content-between align-items-center mt-3">
+        <div class="iconos-nota text-secondary">
+          <button type="button" class="icono-btn" title="Formato"><i class="bi bi-type"></i></button>
+          <button type="button" class="icono-btn" title="Color"><i class="bi bi-emoji-smile"></i></button>
+          <button type="button" class="icono-btn" title="Recordatorio"><i class="bi bi-bell"></i></button>
+          <button type="button" class="icono-btn" title="Colaborador"><i class="bi bi-person-plus"></i></button>
+          <button type="button" class="icono-btn" title="Imagen" (click)="openImagePicker($event, imageInput)"><i class="bi bi-image"></i></button>
+          <button type="button" class="icono-btn" title="Archivar"><i class="bi bi-archive"></i></button>
+          <button type="button" class="icono-btn" title="Más"><i class="bi bi-three-dots-vertical"></i></button>
+          <span class="separador-toolbar"></span>
+          <button type="button" class="icono-btn" title="Deshacer"><i class="bi bi-arrow-counterclockwise"></i></button>
+          <button type="button" class="icono-btn" title="Rehacer"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+        <button class="btn btn-link text-decoration-none fw-bold cerrar-btn" (click)="cerrar()">Cerrar</button>
+      </div>
+      
+      <div class="imagen-seleccionada" *ngIf="imagenSeleccionadaNombre">
+        Imagen seleccionada: {{ imagenSeleccionadaNombre }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row w-100 px-4">
+      <p class="text-secondary text-center mensaje-vacio">Tus notas aparecerán aquí...</p>
+  </div>
+</div>

@@ -18,7 +18,7 @@ export class UsuarioDto {
   @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
   password!: string;
 
-  @IsNotEmpty({ message: 'La fecha de nacimiento es obligatoria' })
+  @IsOptional()
   @IsString()
-  fecha_nacimiento!: string;
+  fecha_nacimiento?: string | null;
 }

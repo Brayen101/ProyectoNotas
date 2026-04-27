@@ -1,0 +1,146 @@
+.notas-container {
+  position: relative;
+}
+
+.contenido-notas {
+  transition: filter 0.2s ease;
+}
+
+.contenido-notas.borroso {
+  filter: blur(4px) brightness(0.55);
+}
+
+.nota-creador {
+  max-width: 700px;
+  align-self: flex-start;
+  margin-left: 115px;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  background-color: #202124;
+  border: 1px solid #5f6368;
+  border-radius: 8px;
+  transition: box-shadow 0.2s;
+}
+
+.modal-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 16, 0.52);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-editor-card {
+  width: min(100%, 760px);
+  min-height: 430px;
+  background: #0f141d;
+  border: 1px solid rgba(130, 146, 167, 0.3);
+  border-radius: 18px;
+  padding: 18px 18px 14px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.pin-icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: #9aa0a6;
+}
+
+.editor-titulo {
+  max-width: calc(100% - 36px);
+}
+
+.editor-contenido {
+  min-height: 230px;
+  resize: none;
+}
+
+.editor-meta {
+  color: #9aa0a6;
+  font-size: 0.9rem;
+  text-align: right;
+  margin-right: 2px;
+}
+
+.editor-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+}
+
+.toolbar-separador {
+  width: 1px;
+  height: 18px;
+  margin: 0 6px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-cerrar {
+  color: #fbbc04;
+}
+
+.btn-cerrar:hover {
+  color: #ffd54f;
+}
+
+.nota-cerrada {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  cursor: text;
+}
+
+.nota-cerrada-input {
+  flex: 1;
+}
+
+.iconos-cerrado {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 22px;
+}
+
+.iconos-cerrado i {
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.iconos-cerrado i:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.nota-creador.expandido {
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6), 0 2px 6px 2px rgba(0,0,0,0.3);
+}
+
+.form-control::placeholder {
+  color: #9aa0a6;
+  font-weight: 500;
+}
+
+.iconos-nota i {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.iconos-nota i:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.mensaje-vacio {
+  transform: translateX(-130px);
+}

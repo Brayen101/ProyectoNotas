@@ -12,9 +12,11 @@ import { NotasService, Nota } from '../../core/services/notas.service';
 })
 export class NotasComponent implements OnInit {
   estaEditando = false;
-  modoEditor: 'nota' | 'checklist' | 'dibujo' = 'nota';
   notas: Nota[] = [];
   usuarioId = 1; // Cambiar esto por el ID del usuario autenticado
+  modoCreacion: 'normal' | 'lista' | 'dibujo' | 'imagen' = 'normal';
+  imagenPreview = '';
+  imagenNombre = '';
 
   notaFormulario: Nota = {
     titulo: '',
@@ -40,22 +42,59 @@ export class NotasComponent implements OnInit {
     );
   }
 
-  expandir(modo: 'nota' | 'checklist' | 'dibujo' = 'nota') {
-    this.modoEditor = modo;
+  expandir() {
+    this.abrirEditor('normal');
+  }
+
+  abrirEditor(modo: 'normal' | 'lista' | 'dibujo' | 'imagen' = 'normal', event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+
     this.estaEditando = true;
+    this.modoCreacion = modo;
 
-    if (modo === 'checklist' && !this.notaFormulario.contenido.trim()) {
-      this.notaFormulario.contenido = '☐ ';
+    if (modo === 'lista' && !this.notaFormulario.contenido.trim()) {
+      this.notaFormulario.contenido = '- ';
+    }
+  }
+
+  abrirSelectorImagen(input: HTMLInputElement, event: Event) {
+    event.stopPropagation();
+    this.abrirEditor('imagen');
+    input.click();
+  }
+
+  onImagenSeleccionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+
+    if (!archivo) {
+      return;
     }
 
-    if (modo === 'dibujo' && !this.notaFormulario.contenido.trim()) {
-      this.notaFormulario.contenido = '[Dibujo] ';
-    }
+    this.imagenNombre = archivo.name;
+    this.modoCreacion = 'imagen';
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagenPreview = String(reader.result || '');
+    };
+    reader.readAsDataURL(archivo);
+  }
+
+  get placeholderContenido(): string {
+    if (this.modoCreacion === 'lista') return 'Escribe los elementos de tu lista...';
+    if (this.modoCreacion === 'dibujo') return 'Describe tu dibujo...';
+    if (this.modoCreacion === 'imagen') return 'Agrega una descripción de la imagen...';
+    return 'Añade una nota...';
   }
 
   cerrar() {
     this.estaEditando = false;
-    this.modoEditor = 'nota';
+    this.modoCreacion = 'normal';
+    this.imagenPreview = '';
+    this.imagenNombre = '';
     this.notaFormulario = {
       titulo: '',
       contenido: '',
@@ -64,25 +103,11 @@ export class NotasComponent implements OnInit {
     };
   }
 
-  openImagePicker(event: Event, input: HTMLInputElement) {
-    event.stopPropagation();
-    this.expandir('nota');
-    input.click();
-  }
-
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-
-    this.expandir('nota');
-    const prefijo = this.notaFormulario.contenido ? '\n' : '';
-    this.notaFormulario.contenido += `${prefijo}[Imagen: ${file.name}]`;
-    input.value = '';
-  }
-
   guardarNota() {
-    if (this.notaFormulario.titulo.trim() && this.notaFormulario.contenido.trim()) {
+    const tieneTexto = this.notaFormulario.titulo.trim() || this.notaFormulario.contenido.trim();
+    const tieneImagen = !!this.imagenPreview;
+
+    if (tieneTexto || tieneImagen) {
       this.notasService.save(this.notaFormulario).subscribe(
         (nota: Nota) => {
           this.notas.push(nota);

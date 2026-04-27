@@ -1,8 +1,16 @@
+.notas-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 16px 24px;
+}
+
 .nota-creador {
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  max-width: 720px;
+  width: min(100%, 720px);
+  margin-left: auto;
+  margin-right: auto;
   background-color: #202124;
   border: 1px solid #5f6368;
   border-radius: 8px;
@@ -14,40 +22,44 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 34px;
+  min-height: 44px;
   cursor: text;
 }
 
 .nota-cerrada-input {
-  flex: 1;
+  padding-left: 8px;
+  color: #e8eaed;
 }
 
-.iconos-cerrado {
+.nota-cerrada-input::placeholder {
+  color: #9aa0a6;
+  font-weight: 500;
+}
+
+.nota-cerrada-iconos {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 22px;
+  gap: 10px;
+  color: #bdc1c6;
+  font-size: 18px;
 }
 
-.iconos-cerrado i {
-  cursor: pointer;
+.nota-cerrada-iconos i {
   padding: 6px;
   border-radius: 50%;
-  transition: 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.icono-cerrado-btn {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
+.nota-cerrada-iconos i:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
-.iconos-cerrado i:hover {
-  background-color: rgba(255,255,255,0.1);
-  color: white;
+.notas-vacias {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
 }
 
 .nota-creador.expandido {
@@ -69,8 +81,4 @@
 .iconos-nota i:hover {
   background-color: rgba(255,255,255,0.1);
   color: white;
-}
-
-.mensaje-vacio {
-  transform: translateX(-130px);
 }

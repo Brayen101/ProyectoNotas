@@ -12,7 +12,7 @@ import { NotasService, Nota } from '../../core/services/notas.service';
 })
 export class NotasComponent implements OnInit {
   estaEditando = false;
-  modoEditor: 'nota' | 'checklist' | 'dibujo' = 'nota';
+  horaEditado = '';
   notas: Nota[] = [];
   usuarioId = 1; // Cambiar esto por el ID del usuario autenticado
 
@@ -40,22 +40,14 @@ export class NotasComponent implements OnInit {
     );
   }
 
-  expandir(modo: 'nota' | 'checklist' | 'dibujo' = 'nota') {
-    this.modoEditor = modo;
+  expandir() {
     this.estaEditando = true;
-
-    if (modo === 'checklist' && !this.notaFormulario.contenido.trim()) {
-      this.notaFormulario.contenido = '☐ ';
-    }
-
-    if (modo === 'dibujo' && !this.notaFormulario.contenido.trim()) {
-      this.notaFormulario.contenido = '[Dibujo] ';
-    }
+    this.actualizarHoraEdicion();
   }
 
   cerrar() {
     this.estaEditando = false;
-    this.modoEditor = 'nota';
+    this.horaEditado = '';
     this.notaFormulario = {
       titulo: '',
       contenido: '',
@@ -64,21 +56,12 @@ export class NotasComponent implements OnInit {
     };
   }
 
-  openImagePicker(event: Event, input: HTMLInputElement) {
-    event.stopPropagation();
-    this.expandir('nota');
-    input.click();
-  }
-
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-
-    this.expandir('nota');
-    const prefijo = this.notaFormulario.contenido ? '\n' : '';
-    this.notaFormulario.contenido += `${prefijo}[Imagen: ${file.name}]`;
-    input.value = '';
+  actualizarHoraEdicion() {
+    const ahora = new Date();
+    this.horaEditado = ahora.toLocaleTimeString('es-ES', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
   }
 
   guardarNota() {

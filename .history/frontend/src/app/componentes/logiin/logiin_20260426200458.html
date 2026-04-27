@@ -1,0 +1,59 @@
+<main class="login-page">
+  <section class="glow-layer"></section>
+
+  <section class="content-wrap">
+    <div class="brand-badge">
+      <span class="dot"></span>
+    </div>
+
+    <h1 class="brand-title">Keep</h1>
+    <p class="brand-subtitle">Inicia sesion en tu cuenta</p>
+
+    <article class="login-card">
+      <form (ngSubmit)="iniciarSesion()" class="login-form">
+        <label for="email" class="field-label">Correo electronico</label>
+        <div class="field-wrap">
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="tu@email.com"
+            [(ngModel)]="credenciales.email"
+            required
+          />
+        </div>
+
+        <label for="password" class="field-label">Contrasena</label>
+        <div class="field-wrap with-action">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            placeholder="********"
+            [(ngModel)]="credenciales.password"
+            required
+          />
+          <button type="button" class="toggle-btn" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+
+        <a class="helper-link" href="#">Olvidaste tu contrasena?</a>
+
+        <button type="submit" class="submit-btn">
+          Iniciar sesion
+          <span class="arrow">-></span>
+        </button>
+
+        <div class="divider">o</div>
+
+        <p class="signup-text">
+          No tienes una cuenta?
+          <a routerLink="/registro">Crear una cuenta</a>
+        </p>
+      </form>
+    </article>
+
+    <p class="footer-note">Taller de Aplicaciones en Internet - 2026</p>
+  </section>
+</main>

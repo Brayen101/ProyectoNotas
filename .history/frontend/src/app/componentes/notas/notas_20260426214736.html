@@ -1,0 +1,111 @@
+<div class="notas-container">
+  <div class="contenido-notas" [class.borroso]="estaEditando">
+    <div class="nota-creador shadow-sm p-3 w-100 mb-5">
+      <div class="nota-cerrada" (click)="expandir()">
+        <input
+          type="text"
+          placeholder="Crear una nota..."
+          class="form-control bg-transparent border-0 text-white fw-bold nota-cerrada-input"
+          readonly
+        >
+        <div class="iconos-cerrado text-secondary">
+          <button type="button" class="icono-btn" (click)="expandir('checklist'); $event.stopPropagation()">
+            <i class="bi bi-check2-square"></i>
+          </button>
+          <button type="button" class="icono-btn" (click)="expandir('dibujo'); $event.stopPropagation()">
+            <i class="bi bi-brush"></i>
+          </button>
+          <button type="button" class="icono-btn" (click)="expandir('nota'); $event.stopPropagation()">
+            <i class="bi bi-image"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notas-grid" *ngIf="tarjetasVisibles.length > 0; else vacio">
+      <article class="nota-card" *ngFor="let tarjeta of tarjetasVisibles" [class.seleccionada]="tarjeta.seleccionada">
+        <button class="seleccion-checkbox" type="button" (click)="toggleSeleccion(tarjeta)" title="Seleccionar">
+          <i class="bi" [class.bi-check-circle-fill]="tarjeta.seleccionada" [class.bi-circle]="!tarjeta.seleccionada"></i>
+        </button>
+
+        <button class="card-pin" type="button" (click)="togglePin(tarjeta)" title="Fijar">
+          <i class="bi" [class.bi-pin-angle-fill]="tarjeta.fijada" [class.bi-pin-angle]="!tarjeta.fijada"></i>
+        </button>
+
+        <img *ngIf="tarjeta.imagen" [src]="tarjeta.imagen" alt="Imagen de nota" class="nota-imagen">
+
+        <h3 class="nota-titulo" *ngIf="tarjeta.titulo">{{ tarjeta.titulo }}</h3>
+
+        <ul class="nota-checklist" *ngIf="tarjeta.checklist.length > 0">
+          <li *ngFor="let item of tarjeta.checklist; let idx = index">
+            <label>
+              <input type="checkbox" [checked]="item.hecho" (change)="toggleChecklistItem(tarjeta, idx)">
+              <span [class.hecho]="item.hecho">{{ item.texto }}</span>
+            </label>
+          </li>
+        </ul>
+
+        <p class="nota-contenido" *ngIf="tarjeta.checklist.length === 0 && tarjeta.contenido">{{ tarjeta.contenido }}</p>
+
+        <div class="nota-tags" *ngIf="tarjeta.etiquetas.length > 0">
+          <span class="nota-tag" *ngFor="let tag of tarjeta.etiquetas">{{ tag }}</span>
+        </div>
+
+        <div class="nota-acciones-hover">
+          <button type="button" class="icono-btn" title="Recordatorio"><i class="bi bi-bell"></i></button>
+          <button type="button" class="icono-btn" title="Colaborador"><i class="bi bi-person-plus"></i></button>
+          <button type="button" class="icono-btn" title="Imagen"><i class="bi bi-image"></i></button>
+          <button type="button" class="icono-btn" title="Archivar" (click)="toggleArchivo(tarjeta)"><i class="bi bi-archive"></i></button>
+          <button type="button" class="icono-btn" title="Más"><i class="bi bi-three-dots-vertical"></i></button>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #vacio>
+      <div class="row w-100 px-4">
+        <p class="text-secondary text-center mensaje-vacio">Tus notas aparecerán aquí...</p>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <div class="modal-editor-backdrop" *ngIf="estaEditando" (click)="cerrar()">
+    <div class="modal-editor-card" (click)="$event.stopPropagation()">
+      <input
+        type="text"
+        placeholder="Título"
+        class="form-control bg-transparent border-0 text-white fw-bold mb-2 shadow-none editor-titulo"
+        [(ngModel)]="notaFormulario.titulo"
+        (ngModelChange)="actualizarHoraEdicion()"
+      >
+      <div class="pin-icon">
+        <i class="bi bi-pin-angle"></i>
+      </div>
+      <textarea
+        placeholder="Crear una nota..."
+        class="form-control bg-transparent border-0 text-white shadow-none editor-contenido"
+        rows="6"
+        [(ngModel)]="notaFormulario.contenido"
+        (ngModelChange)="actualizarHoraEdicion()"
+      ></textarea>
+
+      <div class="editor-meta" *ngIf="horaEditado">Editado: {{ horaEditado }}</div>
+
+      <div class="d-flex justify-content-between align-items-center mt-3 editor-footer">
+        <div class="iconos-nota text-secondary">
+          <i class="bi bi-type"></i>
+          <i class="bi bi-emoji-smile"></i>
+          <i class="bi bi-bell"></i>
+          <i class="bi bi-person-plus"></i>
+          <i class="bi bi-image"></i>
+          <i class="bi bi-archive"></i>
+          <i class="bi bi-three-dots-vertical"></i>
+          <span class="toolbar-separador"></span>
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <i class="bi bi-arrow-clockwise"></i>
+        </div>
+        <button class="btn btn-link text-decoration-none fw-bold btn-cerrar" (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

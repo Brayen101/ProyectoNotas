@@ -1,0 +1,63 @@
+<div class="notas-container">
+  <div class="contenido-notas" [class.borroso]="estaEditando">
+    <div class="nota-creador shadow-sm p-3 w-100 mb-5">
+      <div class="nota-cerrada" (click)="expandir()">
+        <input
+          type="text"
+          placeholder="Crear una nota..."
+          class="form-control bg-transparent border-0 text-white fw-bold nota-cerrada-input"
+          readonly
+        >
+        <div class="iconos-cerrado text-secondary">
+          <i class="bi bi-check2-square"></i>
+          <i class="bi bi-brush"></i>
+          <i class="bi bi-image"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="row w-100 px-4">
+      <p class="text-secondary text-center mensaje-vacio">Tus notas aparecerán aquí...</p>
+    </div>
+  </div>
+
+  <div class="modal-editor-backdrop" *ngIf="estaEditando" (click)="cerrar()">
+    <div class="modal-editor-card" (click)="$event.stopPropagation()">
+      <input
+        type="text"
+        placeholder="Título"
+        class="form-control bg-transparent border-0 text-white fw-bold mb-2 shadow-none editor-titulo"
+        [(ngModel)]="notaFormulario.titulo"
+        (ngModelChange)="actualizarHoraEdicion()"
+      >
+      <div class="pin-icon">
+        <i class="bi bi-pin-angle"></i>
+      </div>
+      <textarea
+        placeholder="Crear una nota..."
+        class="form-control bg-transparent border-0 text-white shadow-none editor-contenido"
+        rows="6"
+        [(ngModel)]="notaFormulario.contenido"
+        (ngModelChange)="actualizarHoraEdicion()"
+      ></textarea>
+
+      <div class="editor-meta" *ngIf="horaEditado">Editado: {{ horaEditado }}</div>
+
+      <div class="d-flex justify-content-between align-items-center mt-3 editor-footer">
+        <div class="iconos-nota text-secondary">
+          <i class="bi bi-type"></i>
+          <i class="bi bi-emoji-smile"></i>
+          <i class="bi bi-bell"></i>
+          <i class="bi bi-person-plus"></i>
+          <i class="bi bi-image"></i>
+          <i class="bi bi-archive"></i>
+          <i class="bi bi-three-dots-vertical"></i>
+          <span class="toolbar-separador"></span>
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <i class="bi bi-arrow-clockwise"></i>
+        </div>
+        <button class="btn btn-link text-decoration-none fw-bold btn-cerrar" (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

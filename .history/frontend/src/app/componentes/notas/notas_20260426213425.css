@@ -1,3 +1,7 @@
+.notas-container {
+  width: 100%;
+}
+
 .nota-creador {
   max-width: 700px;
   margin: 0 auto;
@@ -22,6 +26,14 @@
   flex: 1;
 }
 
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  line-height: 1;
+}
+
 .iconos-cerrado {
   display: flex;
   align-items: center;
@@ -34,15 +46,6 @@
   padding: 6px;
   border-radius: 50%;
   transition: 0.2s;
-}
-
-.icono-cerrado-btn {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .iconos-cerrado i:hover {
@@ -69,6 +72,19 @@
 .iconos-nota i:hover {
   background-color: rgba(255,255,255,0.1);
   color: white;
+}
+
+.imagen-preview {
+  border: 1px solid #5f6368;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.imagen-preview img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  display: block;
 }
 
 .mensaje-vacio {

@@ -3,6 +3,23 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotasService, Nota } from '../../core/services/notas.service';
 
+interface ChecklistItem {
+  texto: string;
+  hecho: boolean;
+}
+
+interface NotaCard {
+  id?: number;
+  titulo: string;
+  contenido: string;
+  imagen?: string;
+  checklist: ChecklistItem[];
+  etiquetas: string[];
+  seleccionada: boolean;
+  fijada: boolean;
+  archivada: boolean;
+}
+
 @Component({
   selector: 'app-notas',
   standalone: true,
@@ -13,7 +30,9 @@ import { NotasService, Nota } from '../../core/services/notas.service';
 export class NotasComponent implements OnInit {
   estaEditando = false;
   modoEditor: 'nota' | 'checklist' | 'dibujo' = 'nota';
+  horaEditado = '';
   notas: Nota[] = [];
+  tarjetas: NotaCard[] = [];
   usuarioId = 1; // Cambiar esto por el ID del usuario autenticado
 
   notaFormulario: Nota = {
@@ -29,13 +48,19 @@ export class NotasComponent implements OnInit {
     this.cargarNotas();
   }
 
+  get tarjetasVisibles(): NotaCard[] {
+    return this.tarjetas.filter((t) => !t.archivada);
+  }
+
   cargarNotas() {
     this.notasService.getByUsuarioId(this.usuarioId).subscribe(
       (data: Nota[]) => {
         this.notas = data;
+        this.tarjetas = data.map((n) => this.mapearNotaATarjeta(n));
       },
       (error) => {
         console.error('Error al cargar notas:', error);
+        this.tarjetas = [];
       }
     );
   }
@@ -43,19 +68,19 @@ export class NotasComponent implements OnInit {
   expandir(modo: 'nota' | 'checklist' | 'dibujo' = 'nota') {
     this.modoEditor = modo;
     this.estaEditando = true;
-
     if (modo === 'checklist' && !this.notaFormulario.contenido.trim()) {
       this.notaFormulario.contenido = '☐ ';
     }
-
     if (modo === 'dibujo' && !this.notaFormulario.contenido.trim()) {
       this.notaFormulario.contenido = '[Dibujo] ';
     }
+    this.actualizarHoraEdicion();
   }
 
   cerrar() {
     this.estaEditando = false;
     this.modoEditor = 'nota';
+    this.horaEditado = '';
     this.notaFormulario = {
       titulo: '',
       contenido: '',
@@ -64,21 +89,12 @@ export class NotasComponent implements OnInit {
     };
   }
 
-  openImagePicker(event: Event, input: HTMLInputElement) {
-    event.stopPropagation();
-    this.expandir('nota');
-    input.click();
-  }
-
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-
-    this.expandir('nota');
-    const prefijo = this.notaFormulario.contenido ? '\n' : '';
-    this.notaFormulario.contenido += `${prefijo}[Imagen: ${file.name}]`;
-    input.value = '';
+  actualizarHoraEdicion() {
+    const ahora = new Date();
+    this.horaEditado = ahora.toLocaleTimeString('es-ES', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
   }
 
   guardarNota() {
@@ -86,6 +102,7 @@ export class NotasComponent implements OnInit {
       this.notasService.save(this.notaFormulario).subscribe(
         (nota: Nota) => {
           this.notas.push(nota);
+          this.tarjetas.unshift(this.mapearNotaATarjeta(nota));
           this.cerrar();
           console.log('Nota guardada:', nota);
         },
@@ -109,4 +126,55 @@ export class NotasComponent implements OnInit {
       );
     }
   }
+
+  toggleSeleccion(tarjeta: NotaCard) {
+    tarjeta.seleccionada = !tarjeta.seleccionada;
+  }
+
+  togglePin(tarjeta: NotaCard) {
+    tarjeta.fijada = !tarjeta.fijada;
+  }
+
+  toggleArchivo(tarjeta: NotaCard) {
+    tarjeta.archivada = !tarjeta.archivada;
+  }
+
+  toggleChecklistItem(tarjeta: NotaCard, index: number) {
+    const item = tarjeta.checklist[index];
+    if (!item) return;
+    item.hecho = !item.hecho;
+  }
+
+  private mapearNotaATarjeta(nota: Nota): NotaCard {
+    const checklist = this.parseChecklist(nota.contenido || '');
+    return {
+      id: nota.id,
+      titulo: nota.titulo,
+      contenido: checklist.length > 0 ? '' : (nota.contenido || ''),
+      checklist,
+      etiquetas: [],
+      seleccionada: false,
+      fijada: false,
+      archivada: false,
+    };
+  }
+
+  private parseChecklist(contenido: string): ChecklistItem[] {
+    const lineas = contenido
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0);
+
+    if (lineas.length === 0) return [];
+
+    const esChecklist = lineas.every((l) => /^(\[ ?\]|\[x\]|☐|☑|✓)/i.test(l));
+    if (!esChecklist) return [];
+
+    return lineas.map((l) => {
+      const hecho = /^(\[x\]|☑|✓)/i.test(l);
+      const texto = l.replace(/^(\[ ?\]|\[x\]|☐|☑|✓)\s*/i, '').trim();
+      return { texto, hecho };
+    });
+  }
+
 }
