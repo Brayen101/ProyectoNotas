@@ -14,6 +14,6 @@ export class Usuario {
   @Column()
   password!: string;
 
-  @Column({ type: 'date' }) 
-  fecha_nacimiento!: string;
+  @Column({ type: 'date', nullable: true })
+  fecha_nacimiento!: string | null;
 }
